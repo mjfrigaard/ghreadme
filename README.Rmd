@@ -28,7 +28,7 @@ remotes::install_github("mjfrigaard/ghreadme")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Load the package, create a repo with the same name as your username (i.e., `https://github.com/<username>/<username>`), then add the following to your `README.Rmd` file (set `echo=FALSE` to hide the code).
 
 ```{r example}
 library(ghreadme)
@@ -44,7 +44,7 @@ collab = "#rstats packages for data science.")
 
 ```{r gh_badges, results='asis'}
 gh_badges(username = "mjfrigaard", 
-  badge = c("details", "stats"), 
+  badge = c("details", "stats", "repo_lang"), 
   theme = "dark")
 ```
 

@@ -14,5 +14,6 @@ RoxygenNote: 7.2.3
 Imports: 
     cli,
     gert,
-    glue
+    glue,
+    purrr
 URL: https://mjfrigaard.github.io/ghreadme/

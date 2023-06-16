@@ -15,7 +15,9 @@ remotes::install_github("mjfrigaard/ghreadme")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Load the package, create a repo with the same name as your username
+(i.e., `https://github.com/<username>/<username>`), then add the
+following to your `README.Rmd` file (set `echo=FALSE` to hide the code).
 
 ``` r
 library(ghreadme)
@@ -44,9 +46,10 @@ collab = "#rstats packages for data science.")
 
 ``` r
 gh_badges(username = "mjfrigaard", 
-  badge = c("details", "stats"), 
+  badge = c("details", "stats", "repo_lang"), 
   theme = "dark")
 ```
 
 ![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=mjfrigaard&theme=github_dark)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=mjfrigaard&theme=github_dark)
+![](http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=mjfrigaard&theme=github_dark)

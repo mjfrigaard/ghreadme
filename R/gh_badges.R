@@ -26,6 +26,9 @@ get_gh_badge <- function(x) {
 #' @param username GitHub username
 #' @param badge name of badge ("details", "commit_lang", "ptime", "repo_lang", "stats")
 #'
+#' @importFrom glue glue
+#' @importFrom purrr map_vec
+#'
 #' @return Markdown links for badges from github-profile-summary-cards.vercel.app API
 #' gh_badges(username = "mjfrigaard", badge = c("details", "stats"), theme = "dark")
 gh_badges <- function(username, badge, theme) {

@@ -10,6 +10,9 @@
 #' @return printed intro
 #' @export who_am_i
 #'
+#' @importFrom glue glue
+#' @importFrom cli cli_text
+#'
 #' @examples
 #' who_am_i(name = "Martin",
 #' likes = "#rstats and data visualization.",

@@ -1,0 +1,52 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "\t",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# `ghreadme`
+
+
+The goal of `ghreadme` is to create your GitHub profile `README.md`
+
+## Installation
+
+You can install the development version of `ghreadme` like so:
+
+``` r
+remotes::install_github("mjfrigaard/ghreadme")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(ghreadme)
+```
+
+```{r who_am_i}
+who_am_i(name = "Martin",
+likes = "#rstats and data visualization.",
+learn = "shiny app development, JavaScript, and Bayesian statistics.",
+work = "R package development tools.",
+collab = "#rstats packages for data science.")
+```
+
+```{r gh_badges, results='asis'}
+gh_badges(username = "mjfrigaard", 
+  badge = c("details", "stats"), 
+  theme = "dark")
+```
+
+
+

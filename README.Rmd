@@ -42,11 +42,21 @@ work = "R package development tools.",
 collab = "#rstats packages for data science.")
 ```
 
+For GitHub badges from [vercel.app](https://github-profile-summary-cards.vercel.app/demo.html), include the call in a code chunk with `results` set to `asis`. 
+
+Example: 
+
+````{verbatim}
 ```{r gh_badges, results='asis'}
 gh_badges(username = "mjfrigaard", 
   badge = c("details", "stats", "repo_lang"), 
   theme = "dark")
 ```
+````
 
-
+```{r gh_badges, results='asis', echo=FALSE}
+gh_badges(username = "mjfrigaard", 
+  badge = c("details", "stats", "repo_lang"), 
+  theme = "dark")
+```
 

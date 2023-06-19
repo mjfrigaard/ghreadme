@@ -44,11 +44,19 @@ collab = "#rstats packages for data science.")
 
          📫 Want to connect? Use the badges below...
 
-``` r
+For GitHub badges from
+[vercel.app](https://github-profile-summary-cards.vercel.app/demo.html),
+include the call in a code chunk with `results` set to `asis`.
+
+Example:
+
+```` default
+```{r gh_badges, results='asis'}
 gh_badges(username = "mjfrigaard", 
   badge = c("details", "stats", "repo_lang"), 
   theme = "dark")
 ```
+````
 
 ![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=mjfrigaard&theme=github_dark)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=mjfrigaard&theme=github_dark)

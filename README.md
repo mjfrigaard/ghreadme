@@ -44,6 +44,8 @@ collab = "#rstats packages for data science.")
 
          📫 Want to connect? Use the badges below...
 
+## GitHub badges
+
 For GitHub badges from
 [vercel.app](https://github-profile-summary-cards.vercel.app/demo.html),
 include the call in a code chunk with `results` set to `asis`.
@@ -61,3 +63,19 @@ gh_badges(username = "mjfrigaard",
 ![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=mjfrigaard&theme=github_dark)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=mjfrigaard&theme=github_dark)
 ![](http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=mjfrigaard&theme=github_dark)
+
+## Stack Overflow reputation
+
+Example:
+
+```` default
+```{r so_rep, results='asis'}
+so_rep(
+  username = "martin-frigaard", 
+  user_id = "4926446")
+```
+````
+
+<a href='https://stackoverflow.com/users/4926446/martin-frigaard' target='_blank'>
+<img alt='StackOverflow'
+src='https://stackoverflow-badge.vercel.app/?userID=4926446' /> </a>

@@ -3,10 +3,11 @@
 #' @description
 #' GitHub badges from [vercel](https://github-profile-summary-cards.vercel.app/demo.html)
 #'
+#' @noRd
 #'
 #' @param x badge
 #'
-#' @return badges from API
+#' @return badges from vercel.app
 #'
 get_gh_badge <- function(x) {
   switch(x,

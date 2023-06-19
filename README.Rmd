@@ -42,6 +42,8 @@ work = "R package development tools.",
 collab = "#rstats packages for data science.")
 ```
 
+## GitHub badges 
+
 For GitHub badges from [vercel.app](https://github-profile-summary-cards.vercel.app/demo.html), include the call in a code chunk with `results` set to `asis`. 
 
 Example: 
@@ -58,5 +60,21 @@ gh_badges(username = "mjfrigaard",
 gh_badges(username = "mjfrigaard", 
   badge = c("details", "stats", "repo_lang"), 
   theme = "dark")
+```
+
+## Stack Overflow reputation 
+
+Example: 
+
+````{verbatim}
+```{r so_rep, results='asis'}
+so_rep(
+  username = "martin-frigaard", 
+  user_id = "4926446")
+```
+````
+
+```{r so_rep, results='asis', echo=FALSE}
+so_rep(username = "martin-frigaard", user_id = "4926446")
 ```
 

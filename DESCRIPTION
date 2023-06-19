@@ -1,6 +1,6 @@
 Package: ghreadme
 Title: Create a GitHub profile README
-Version: 0.0.0.9000
+Version: 0.1.0
 Author: Martin Frigaard
 Maintainer: Martin Frigaard <mjfrigaard@pm.me>
 Description: Quickly create a GitHub profile README from R.

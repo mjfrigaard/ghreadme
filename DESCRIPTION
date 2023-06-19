@@ -19,5 +19,6 @@ Imports:
 URL: https://mjfrigaard.github.io/ghreadme/
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    bslib
 VignetteBuilder: knitr

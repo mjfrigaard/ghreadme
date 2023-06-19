@@ -2,6 +2,7 @@
 
 export(gh_badges)
 export(who_am_i)
+import(bslib)
 importFrom(cli,cli_text)
 importFrom(glue,glue)
 importFrom(purrr,map_vec)

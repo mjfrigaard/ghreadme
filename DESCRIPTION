@@ -17,3 +17,7 @@ Imports:
     glue,
     purrr
 URL: https://mjfrigaard.github.io/ghreadme/
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

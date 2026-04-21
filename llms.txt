@@ -1,0 +1,99 @@
+# `ghreadme`
+
+The goal of `ghreadme` is to create your GitHub profile `README.md`
+using [R Markdown.](https://rmarkdown.rstudio.com/)
+
+## Installation
+
+You can install the development version of `ghreadme` like so:
+
+``` r
+remotes::install_github("mjfrigaard/ghreadme")
+```
+
+## Example
+
+Load the package, create a repo with the same name as your username
+(i.e., `https://github.com/<username>/<username>`), then add the
+following to your `README.Rmd` file (set `echo=FALSE` to hide the code).
+
+``` r
+library(ghreadme)
+```
+
+``` r
+who_am_i(name = "Martin",
+  likes = "#rstats and data visualization.",
+  learn = "Shiny app development, Python, and Linux",
+  work = "R package development tools.",
+  collab = "#rstats packages for data science."
+  )
+```
+
+``` R
+     👋 Hi, my name is Martin.
+
+     👀 I like #rstats and data visualization.
+
+     🌱 I'm learning about Shiny app development, Python, and Linux
+
+     📦 I'm currently working on R package development tools.
+
+     💞 I'd love to collaborate on #rstats packages for data science.
+
+     📫 Want to connect? Use the badges below...
+```
+
+## GitHub badges
+
+For GitHub badges from
+[vercel.app](https://github-profile-summary-cards.vercel.app/demo.html),
+include the call in a code chunk with `results` set to `asis`.
+
+Example:
+
+```` default
+```{r gh_badges, results='asis'}
+gh_badges(username = "mjfrigaard", 
+  badge = c("details", "stats", "repo_lang"), 
+  theme = "dark")
+```
+````
+
+![](http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=mjfrigaard&theme=github_dark)![](http://github-profile-summary-cards.vercel.app/api/cards/stats?username=mjfrigaard&theme=github_dark)![](http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=mjfrigaard&theme=github_dark)
+
+## Stack Overflow reputation
+
+Example:
+
+```` default
+```{r so_rep, results='asis'}
+so_rep(
+  username = "martin-frigaard", 
+  user_id = "4926446")
+```
+````
+
+[![StackOverflow](https://stackoverflow-badge.vercel.app/?userID=4926446)](https://stackoverflow.com/users/4926446/martin-frigaard)
+
+# Package index
+
+## All functions
+
+- [`gh_badges()`](https://mjfrigaard.github.io/ghreadme/reference/gh_badges.md)
+  : Create GitHub badges
+- [`so_rep()`](https://mjfrigaard.github.io/ghreadme/reference/so_rep.md)
+  : Stack Overflow Reputation Badge
+- [`who_am_i()`](https://mjfrigaard.github.io/ghreadme/reference/who_am_i.md)
+  : Introduce Yourself
+- [`who_am_i_gif()`](https://mjfrigaard.github.io/ghreadme/reference/who_am_i_gif.md)
+  : Create a GIF of who_am_i() console output
+
+# Articles
+
+### All vignettes
+
+- [Create a GIF for your GitHub
+  README](https://mjfrigaard.github.io/ghreadme/articles/create-gif.md):
+- [Getting
+  started](https://mjfrigaard.github.io/ghreadme/articles/get-started.md):

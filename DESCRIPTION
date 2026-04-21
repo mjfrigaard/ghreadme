@@ -10,15 +10,20 @@ LazyData: true
 Depends: 
     R (>= 3.5)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Imports: 
     cli,
     gert,
     glue,
     purrr
 URL: https://mjfrigaard.github.io/ghreadme/
-Suggests: 
+Suggests:
+    camcorder,
+    gifski,
+    ggplot2,
     knitr,
     rmarkdown,
-    bslib
+    bslib,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 VignetteBuilder: knitr

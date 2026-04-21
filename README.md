@@ -4,6 +4,7 @@
 # `ghreadme`
 
 The goal of `ghreadme` is to create your GitHub profile `README.md`
+using [R Markdown.](https://rmarkdown.rstudio.com/)
 
 ## Installation
 
@@ -25,18 +26,18 @@ library(ghreadme)
 
 ``` r
 who_am_i(name = "Martin",
-likes = "#rstats and data visualization.",
-learn = "shiny app development, JavaScript, and Bayesian statistics.",
-work = "R package development tools.",
-collab = "#rstats packages for data science.")
+  likes = "#rstats and data visualization.",
+  learn = "Shiny app development, Python, and Linux",
+  work = "R package development tools.",
+  collab = "#rstats packages for data science."
+  )
 ```
 
          👋 Hi, my name is Martin.
 
          👀 I like #rstats and data visualization.
 
-         🌱 I'm learning about shiny app development, JavaScript, and Bayesian
-         statistics.
+         🌱 I'm learning about Shiny app development, Python, and Linux
 
          📦 I'm currently working on R package development tools.
 

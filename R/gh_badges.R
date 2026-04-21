@@ -48,5 +48,3 @@ gh_badges <- function(username, badge, theme) {
     "![](http://github-profile-summary-cards.vercel.app/api/cards/{gh_badge}?username={username}&theme={gh_theme})")
   }
 }
-
-gh_badges(username = "mjfrigaard", badge = c("details", "stats"), theme = "dark")

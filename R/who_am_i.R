@@ -1,3 +1,6 @@
+# Local alias so Sys.sleep can be mocked via testthat::local_mocked_bindings.
+Sys.sleep <- function(time) base::Sys.sleep(time)
+
 #' Introduce Yourself
 #'
 #' @param name Your name

@@ -19,11 +19,24 @@ Imports:
 URL: https://mjfrigaard.github.io/ghreadme/
 Suggests:
     camcorder,
+    circlize,
+    ComplexHeatmap,
+    dplyr,
+    gh,
+    ggExtra,
     gifski,
     ggplot2,
     knitr,
+    lubridate,
+    plotly,
+    RColorBrewer,
+    rlang,
     rmarkdown,
     bslib,
-    testthat (>= 3.0.0)
+    scales,
+    spiralize,
+    testthat (>= 3.0.0),
+    tibble,
+    tidyr
 Config/testthat/edition: 3
 VignetteBuilder: knitr

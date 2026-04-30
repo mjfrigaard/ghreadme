@@ -1,15 +1,23 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://mjfrigaard.github.io/ghreadme/404.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/articles/create-gif.html</loc></url>
-<url><loc>https://mjfrigaard.github.io/ghreadme/articles/get-started.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/articles/index.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/articles/viz-git-gif.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/authors.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/index.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/news/index.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/reference/calendar_heatmap_plot.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/reference/collect_git_commits.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/reference/cumulative_line_plot.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/reference/gh_badges.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/reference/ghreadme-package.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/reference/index.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/reference/punchcard_plot.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/reference/scatter_density_plot.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/reference/so_rep.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/reference/spiral_heatmap_plot.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/reference/spiral_horizon_plot.html</loc></url>
+<url><loc>https://mjfrigaard.github.io/ghreadme/reference/spiral_points_plot.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/reference/who_am_i.html</loc></url>
 <url><loc>https://mjfrigaard.github.io/ghreadme/reference/who_am_i_gif.html</loc></url>
 </urlset>

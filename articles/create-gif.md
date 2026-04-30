@@ -13,6 +13,7 @@ requires three packages that are not installed with `ghreadme` by
 default:
 
 ``` r
+
 install.packages(c("camcorder", "gifski", "ggplot2"))
 ```
 
@@ -31,6 +32,7 @@ The `output` argument controls where the GIF is saved — set it to a path
 inside your profile repository:
 
 ``` r
+
 library(ghreadme)
 
 who_am_i_gif(
@@ -57,6 +59,7 @@ final line.
 | `height`         | `400`   | GIF height in pixels                 |
 
 ``` r
+
 who_am_i_gif(
   name           = "Martin",
   likes          = "#rstats and data visualization.",
@@ -75,6 +78,7 @@ who_am_i_gif(
 Set `connect = FALSE` to drop the final *“Want to connect?”* line:
 
 ``` r
+
 who_am_i_gif(
   name    = "Martin",
   likes   = "#rstats and data visualization.",
@@ -113,6 +117,7 @@ Your profile page will display the animated introduction automatically.
 ## Full workflow
 
 ``` r
+
 library(ghreadme)
 
 # 1. Generate the GIF into your profile repo

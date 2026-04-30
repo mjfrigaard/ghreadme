@@ -8,6 +8,7 @@ using [R Markdown.](https://rmarkdown.rstudio.com/)
 You can install the development version of `ghreadme` like so:
 
 ``` r
+
 remotes::install_github("mjfrigaard/ghreadme")
 ```
 
@@ -18,10 +19,12 @@ Load the package, create a repo with the same name as your username
 following to your `README.Rmd` file (set `echo=FALSE` to hide the code).
 
 ``` r
+
 library(ghreadme)
 ```
 
 ``` r
+
 who_am_i(name = "Martin",
   likes = "#rstats and data visualization.",
   learn = "Shiny app development, Python, and Linux",

@@ -8,6 +8,7 @@ using [R Markdown.](https://rmarkdown.rstudio.com/)
 You can install the development version of `ghreadme` like so:
 
 ``` r
+
 remotes::install_github("mjfrigaard/ghreadme")
 ```
 
@@ -18,10 +19,12 @@ Load the package, create a repo with the same name as your username
 following to your `README.Rmd` file (set `echo=FALSE` to hide the code).
 
 ``` r
+
 library(ghreadme)
 ```
 
 ``` r
+
 who_am_i(name = "Martin",
   likes = "#rstats and data visualization.",
   learn = "Shiny app development, Python, and Linux",
@@ -80,10 +83,27 @@ so_rep(
 
 ## All functions
 
+- [`calendar_heatmap_plot()`](https://mjfrigaard.github.io/ghreadme/reference/calendar_heatmap_plot.md)
+  : GitHub-style calendar heatmap of daily commit counts
+- [`collect_git_commits()`](https://mjfrigaard.github.io/ghreadme/reference/collect_git_commits.md)
+  : Collect commits from all public repos of a GitHub user
+- [`cumulative_line_plot()`](https://mjfrigaard.github.io/ghreadme/reference/cumulative_line_plot.md)
+  : Cumulative commits over time, one line per repo
 - [`gh_badges()`](https://mjfrigaard.github.io/ghreadme/reference/gh_badges.md)
   : Create GitHub badges
+- [`punchcard_plot()`](https://mjfrigaard.github.io/ghreadme/reference/punchcard_plot.md)
+  : Punchcard plot: commits by weekday and hour of day
+- [`scatter_density_plot()`](https://mjfrigaard.github.io/ghreadme/reference/scatter_density_plot.md)
+  : Scatter of commits across two dimensions (repo / time / date /
+  weekday)
 - [`so_rep()`](https://mjfrigaard.github.io/ghreadme/reference/so_rep.md)
   : Stack Overflow Reputation Badge
+- [`spiral_heatmap_plot()`](https://mjfrigaard.github.io/ghreadme/reference/spiral_heatmap_plot.md)
+  : Spiral heatmap of daily commit counts
+- [`spiral_horizon_plot()`](https://mjfrigaard.github.io/ghreadme/reference/spiral_horizon_plot.md)
+  : Spiral horizon plot of daily commit counts
+- [`spiral_points_plot()`](https://mjfrigaard.github.io/ghreadme/reference/spiral_points_plot.md)
+  : Spiral plot of daily commit counts (points)
 - [`who_am_i()`](https://mjfrigaard.github.io/ghreadme/reference/who_am_i.md)
   : Introduce Yourself
 - [`who_am_i_gif()`](https://mjfrigaard.github.io/ghreadme/reference/who_am_i_gif.md)
@@ -95,5 +115,5 @@ so_rep(
 
 - [Create a GIF for your GitHub
   README](https://mjfrigaard.github.io/ghreadme/articles/create-gif.md):
-- [Getting
-  started](https://mjfrigaard.github.io/ghreadme/articles/get-started.md):
+- [Animating Git visualizations with
+  camcorder](https://mjfrigaard.github.io/ghreadme/articles/viz-git-gif.md):

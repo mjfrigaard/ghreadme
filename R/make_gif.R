@@ -46,10 +46,18 @@ make_gif <- function(frame_dir, output, width, height,
                      last_duration  = 4) {
 
   if (!requireNamespace("gifski", quietly = TRUE)) {
-    cli::cli_abort(
-      "Package {.pkg gifski} is required.",
-      "i" = "Install with: {.code install.packages('gifski')}"
-    )
+    if ("gifski" %in% rownames(utils::installed.packages())) {
+      cli::cli_abort(c(
+        "Package {.pkg gifski} is installed but failed to load.",
+        "i" = "This is usually a binary incompatibility after an R upgrade.",
+        "i" = "Reinstall from source: {.code install.packages('gifski', type = 'source')}"
+      ))
+    } else {
+      cli::cli_abort(c(
+        "Package {.pkg gifski} is required.",
+        "i" = "Install with: {.code install.packages('gifski')}"
+      ))
+    }
   }
 
   png_files <- sort(list.files(frame_dir, pattern = "\\.png$", full.names = TRUE))

@@ -34,8 +34,8 @@ helpers from `ghreadme`:
 library(ghreadme)
 
 commits <- collect_git_commits(
-  user   = "mjfrigaard",
-  emails = c("mjfrigaard@pm.me", "mjfrigaard@gmail.com")
+  user   = "your-username",
+  emails = c("you@example.com", "you@work.example.com")
 )
 ```
 

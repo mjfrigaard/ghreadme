@@ -13,6 +13,7 @@ Roxygen: list(markdown = TRUE)
 Imports: 
     cli,
     gert,
+    gifski,
     glue,
     purrr
 URL: https://mjfrigaard.github.io/ghreadme/
@@ -22,7 +23,6 @@ Suggests:
     dplyr,
     gh,
     ggExtra,
-    gifski,
     ggplot2,
     knitr,
     lubridate,

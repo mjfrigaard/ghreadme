@@ -2,9 +2,8 @@ pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
-  create-gif: create-gif.html
   viz-git-gif: viz-git-gif.html
-last_built: 2026-05-07T18:22Z
+last_built: 2026-05-07T19:19Z
 urls:
   reference: https://mjfrigaard.github.io/ghreadme/reference
   article: https://mjfrigaard.github.io/ghreadme/articles

@@ -37,7 +37,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/create-gif.html">Create a GIF for your GitHub README</a></li>
-    <li><a class="dropdown-item" href="../articles/viz-git-gif.html">Animating Git visualizations with camcorder</a></li>
+    <li><a class="dropdown-item" href="../articles/viz-git-gif.html">Animating Git visualizations with gifski</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -75,14 +75,14 @@ to generate that GIF and embed it in your README.</p>
 <div class="section level2">
 <h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
-<p><code><a href="../reference/who_am_i_gif.html">who_am_i_gif()</a></code> requires three packages that are not
+<p><code><a href="../reference/who_am_i_gif.html">who_am_i_gif()</a></code> requires two packages that are not
 installed with <code>ghreadme</code> by default:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"camcorder"</span>, <span class="st">"gifski"</span>, <span class="st">"ggplot2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><a href="https://thebioengineer.r-universe.dev/camcorder" class="external-link"><code>camcorder</code></a>
-records each ggplot frame to a temporary PNG, and <a href="https://github.com/r-rust/gifski" class="external-link"><code>gifski</code></a> stitches
-those PNGs into the final GIF. <code>ggplot2</code> renders the text as
-plot frames.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gifski"</span>, <span class="st">"ggplot2"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><code>ggplot2</code> renders each line of text as a plot frame,
+<code>ggsave()</code> writes the frames to numbered PNGs in a temporary
+directory, and <a href="https://github.com/r-rust/gifski" class="external-link"><code>gifski</code></a>
+assembles those PNGs into the final GIF.</p>
 </div>
 <div class="section level2">
 <h2 id="create-the-gif">Create the GIF<a class="anchor" aria-label="anchor" href="#create-the-gif"></a>

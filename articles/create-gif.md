@@ -9,18 +9,17 @@ to generate that GIF and embed it in your README.
 ## Prerequisites
 
 [`who_am_i_gif()`](https://mjfrigaard.github.io/ghreadme/reference/who_am_i_gif.md)
-requires three packages that are not installed with `ghreadme` by
-default:
+requires two packages that are not installed with `ghreadme` by default:
 
 ``` r
 
-install.packages(c("camcorder", "gifski", "ggplot2"))
+install.packages(c("gifski", "ggplot2"))
 ```
 
-[`camcorder`](https://thebioengineer.r-universe.dev/camcorder) records
-each ggplot frame to a temporary PNG, and
-[`gifski`](https://github.com/r-rust/gifski) stitches those PNGs into
-the final GIF. `ggplot2` renders the text as plot frames.
+`ggplot2` renders each line of text as a plot frame, `ggsave()` writes
+the frames to numbered PNGs in a temporary directory, and
+[`gifski`](https://github.com/r-rust/gifski) assembles those PNGs into
+the final GIF.
 
 ## Create the GIF
 

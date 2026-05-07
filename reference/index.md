@@ -10,6 +10,8 @@
   : Cumulative commits over time, one line per repo
 - [`gh_badges()`](https://mjfrigaard.github.io/ghreadme/reference/gh_badges.md)
   : Create GitHub badges
+- [`make_gif()`](https://mjfrigaard.github.io/ghreadme/reference/make_gif.md)
+  : Assemble a directory of PNG frames into a GIF
 - [`punchcard_plot()`](https://mjfrigaard.github.io/ghreadme/reference/punchcard_plot.md)
   : Punchcard plot: commits by weekday and hour of day
 - [`scatter_density_plot()`](https://mjfrigaard.github.io/ghreadme/reference/scatter_density_plot.md)

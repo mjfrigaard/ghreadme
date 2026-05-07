@@ -2,8 +2,8 @@
 
 Records each message from
 [`who_am_i()`](https://mjfrigaard.github.io/ghreadme/reference/who_am_i.md)
-as a ggplot frame using `camcorder`, then renders the frames to a gif
-with `gifski`.
+as a ggplot frame using `ggplot2` and `ggsave()`, then assembles the
+frames into a GIF with `gifski`.
 
 ## Usage
 
@@ -18,7 +18,9 @@ who_am_i_gif(
   output = "intro.gif",
   width = 800,
   height = 400,
-  frame_duration = 1.5
+  frame_duration = 1.5,
+  first_duration = 1,
+  last_duration = 4
 )
 ```
 
@@ -62,7 +64,15 @@ who_am_i_gif(
 
 - frame_duration:
 
-  seconds each frame is shown (default `1.5`)
+  seconds each middle frame is shown (default `1.5`)
+
+- first_duration:
+
+  seconds the first frame is shown (default `1`)
+
+- last_duration:
+
+  seconds the last frame is shown (default `4`)
 
 ## Value
 

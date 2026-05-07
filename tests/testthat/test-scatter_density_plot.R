@@ -41,3 +41,23 @@ test_that("scatter_density_plot errors when filters leave no commits", {
     "No commits after filtering"
   )
 })
+
+test_that("scatter_density_plot respects date bounds", {
+  skip_if_not_installed("ggplot2")
+
+  p <- scatter_density_plot(
+    make_test_commits(),
+    date_begin = "2024-01-01",
+    date_end   = "2024-12-31"
+  )
+  expect_true(all(as.Date(p$data$date) >= as.Date("2024-01-01")))
+  expect_true(all(as.Date(p$data$date) <= as.Date("2024-12-31")))
+})
+
+test_that("scatter_density_plot plot_type 'density' returns an ggExtraPlot", {
+  skip_if_not_installed("ggplot2")
+  skip_if_not_installed("ggExtra")
+
+  result <- scatter_density_plot(make_test_commits(), plot_type = "density")
+  expect_s3_class(result, "ggExtraPlot")
+})

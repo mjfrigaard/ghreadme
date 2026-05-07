@@ -10,7 +10,6 @@ LazyData: true
 Depends: 
     R (>= 3.5)
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Imports: 
     cli,
     gert,
@@ -18,7 +17,6 @@ Imports:
     purrr
 URL: https://mjfrigaard.github.io/ghreadme/
 Suggests:
-    camcorder,
     circlize,
     ComplexHeatmap,
     dplyr,
@@ -40,3 +38,4 @@ Suggests:
     tidyr
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0

@@ -14,7 +14,9 @@ who_am_i_gif(
   output = "intro.gif",
   width = 800,
   height = 400,
-  frame_duration = 1.5
+  frame_duration = 1.5,
+  first_duration = 1,
+  last_duration = 4
 )
 }
 \arguments{
@@ -36,14 +38,18 @@ who_am_i_gif(
 
 \item{height}{gif height in pixels (default \code{400})}
 
-\item{frame_duration}{seconds each frame is shown (default \code{1.5})}
+\item{frame_duration}{seconds each middle frame is shown (default \code{1.5})}
+
+\item{first_duration}{seconds the first frame is shown (default \code{1})}
+
+\item{last_duration}{seconds the last frame is shown (default \code{4})}
 }
 \value{
 invisibly returns \code{output} path
 }
 \description{
 Records each message from \code{\link[=who_am_i]{who_am_i()}} as a ggplot frame using
-\code{camcorder}, then renders the frames to a gif with \code{gifski}.
+\code{ggplot2} and \code{ggsave()}, then assembles the frames into a GIF with \code{gifski}.
 }
 \examples{
 \dontrun{

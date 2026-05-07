@@ -1,8 +1,8 @@
 ---
-title: "Animating Git visualizations with camcorder"
+title: "Animating Git visualizations with gifski"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Animating Git visualizations with camcorder}
+  %\VignetteIndexEntry{Animating Git visualizations with gifski}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,16 +16,15 @@ knitr::opts_chunk$set(
 ```
 
 The data visualization functions in `ghreadme` return `ggplot` objects, which
-means each call can be recorded as a frame with the
-[`camcorder`](https://thebioengineer.r-universe.dev/camcorder) package and
-stitched into an animated GIF with [`gifski`](https://github.com/r-rust/gifski).
-This vignette walks through three patterns for turning a single static plot
-into an animation that highlights how your commit activity evolves over time.
+means each call can be saved as a PNG frame with `ggsave()` and then stitched
+into an animated GIF with [`gifski`](https://github.com/r-rust/gifski).
+This vignette walks through three patterns for turning a static plot into an
+animation that highlights how your commit activity evolves over time.
 
 ## Prerequisites
 
 ```{r install}
-install.packages(c("camcorder", "gifski"))
+install.packages(c("gifski", "ggplot2"))
 ```
 
 The recipes below also assume the data-collection and ggplot-based plot
@@ -33,7 +32,6 @@ helpers from `ghreadme`:
 
 ```{r setup}
 library(ghreadme)
-library(camcorder)
 
 commits <- collect_git_commits(
   user   = "mjfrigaard",
@@ -41,40 +39,20 @@ commits <- collect_git_commits(
 )
 ```
 
-## How `camcorder` works
+## How the approach works
 
-`camcorder::gg_record()` registers a hook so that **every** ggplot you `print()`
-is also written to a PNG inside a temporary directory. After the loop finishes,
-`camcorder::gg_playback()` reads those PNGs back in order and writes them to a
-single GIF. The pattern is always:
+Each recipe follows the same pattern:
 
-1. Call `gg_record()` once to start recording.
-2. Loop, building one ggplot per frame and printing it.
-3. Call `gg_playback()` to render the GIF.
+1. Create a temporary directory for the PNG frames.
+2. Loop, building one ggplot per frame and writing it with `ggsave()`.
+3. Call `make_gif()` to assemble the frames into a GIF.
 
-```{r record-template}
-gg_record(
-  dir    = file.path(tempdir(), "viz-frames"),
-  device = "png",
-  width  = 1000,
-  height = 600,
-  units  = "px",
-  dpi    = 96,
-  bg     = "white"
-)
+`make_gif()` is exported from `ghreadme` and handles collecting the PNGs,
+building a per-frame delay vector, and calling `gifski::gifski()`. The
+`first_duration` and `last_duration` arguments let you hold the opening and
+closing frames longer so readers have time to register the start and end states.
 
-# ... loop printing one ggplot per frame ...
-
-gg_playback(
-  name                 = "viz-git.gif",
-  first_image_duration = 1,
-  last_image_duration  = 4,
-  frame_duration       = 0.5,
-  image_resize         = 1000
-)
-```
-
-The three recipes below all reuse this skeleton and only differ in *what* is
+The three recipes below all follow this pattern and only differ in *what* is
 plotted on each frame.
 
 ## Recipe 1: cumulative commits, sliding the end date
@@ -83,40 +61,37 @@ plotted on each frame.
 `date_end` forward one month at a time makes that growth feel kinetic — lines
 appear, lengthen, and overtake one another as your repos accumulate commits.
 
+> **Note:** Start `date_seq` one month *after* `date_begin`. If `date_end`
+> equals `date_begin` on the first iteration and no commits exist on that exact
+> day, `cumulative_line_plot()` will error with "No commits after filtering."
+
 ```{r recipe-cumulative}
 date_seq <- seq(
-  from = as.Date("2023-01-01"),
+  from = as.Date("2023-02-01"),  # one month after date_begin
   to   = max(commits$date),
   by   = "1 month"
 )
 
-gg_record(
-  dir    = file.path(tempdir(), "cumulative-frames"),
-  device = "png",
-  width  = 1000,
-  height = 600,
-  units  = "px",
-  dpi    = 96,
-  bg     = "white"
-)
+cum_dir <- file.path(tempdir(), "cumulative-frames")
+dir.create(cum_dir, showWarnings = FALSE, recursive = TRUE)
 
-for (d in date_seq) {
+for (i in seq_along(date_seq)) {
   p <- cumulative_line_plot(
     commits,
     date_begin = "2023-01-01",
-    date_end   = as.Date(d, origin = "1970-01-01"),
+    date_end   = date_seq[[i]],
     top_n      = 8
   )
-  print(p)
+  ggsave(
+    filename = file.path(cum_dir, sprintf("%04d.png", i)),
+    plot     = p,
+    width = 1000, height = 600, units = "px", dpi = 96, bg = "white"
+  )
 }
 
-gg_playback(
-  name                 = "cumulative.gif",
-  first_image_duration = 1,
-  last_image_duration  = 4,
-  frame_duration       = 0.4,
-  image_resize         = 1000
-)
+make_gif(cum_dir, "cumulative.gif",
+         width = 1000, height = 600,
+         first_duration = 1, frame_duration = 0.4, last_duration = 4)
 ```
 
 ## Recipe 2: calendar heatmap, year by year
@@ -129,33 +104,26 @@ is bump `date_end` to the end of the next year.
 ```{r recipe-calendar}
 years <- sort(unique(commits$year))
 
-gg_record(
-  dir    = file.path(tempdir(), "calendar-frames"),
-  device = "png",
-  width  = 1100,
-  height = 700,
-  units  = "px",
-  dpi    = 96,
-  bg     = "white"
-)
+cal_dir <- file.path(tempdir(), "calendar-frames")
+dir.create(cal_dir, showWarnings = FALSE, recursive = TRUE)
 
-for (yr in years) {
+for (i in seq_along(years)) {
   p <- calendar_heatmap_plot(
     commits,
     date_begin = paste0(min(years), "-01-01"),
-    date_end   = paste0(yr, "-12-31"),
-    title      = paste("Through", yr)
+    date_end   = paste0(years[[i]], "-12-31"),
+    title      = paste("Through", years[[i]])
   )
-  print(p)
+  ggsave(
+    filename = file.path(cal_dir, sprintf("%04d.png", i)),
+    plot     = p,
+    width = 1100, height = 700, units = "px", dpi = 96, bg = "white"
+  )
 }
 
-gg_playback(
-  name                 = "calendar.gif",
-  first_image_duration = 1,
-  last_image_duration  = 4,
-  frame_duration       = 1.2,
-  image_resize         = 1100
-)
+make_gif(cal_dir, "calendar.gif",
+         width = 1100, height = 700,
+         first_duration = 1, frame_duration = 1.2, last_duration = 4)
 ```
 
 ## Recipe 3: punchcard carousel across repos
@@ -170,28 +138,21 @@ top_repos <- commits |>
   dplyr::slice_head(n = 6) |>
   dplyr::pull(repo)
 
-gg_record(
-  dir    = file.path(tempdir(), "punchcard-frames"),
-  device = "png",
-  width  = 1000,
-  height = 500,
-  units  = "px",
-  dpi    = 96,
-  bg     = "white"
-)
+punch_dir <- file.path(tempdir(), "punchcard-frames")
+dir.create(punch_dir, showWarnings = FALSE, recursive = TRUE)
 
-for (r in top_repos) {
-  p <- punchcard_plot(commits, repo = r, title = r)
-  print(p)
+for (i in seq_along(top_repos)) {
+  p <- punchcard_plot(commits, repo = top_repos[[i]], title = top_repos[[i]])
+  ggsave(
+    filename = file.path(punch_dir, sprintf("%04d.png", i)),
+    plot     = p,
+    width = 1000, height = 500, units = "px", dpi = 96, bg = "white"
+  )
 }
 
-gg_playback(
-  name                 = "punchcard.gif",
-  first_image_duration = 1,
-  last_image_duration  = 4,
-  frame_duration       = 1.5,
-  image_resize         = 1000
-)
+make_gif(punch_dir, "punchcard.gif",
+         width = 1000, height = 500,
+         first_duration = 1, frame_duration = 1.5, last_duration = 4)
 ```
 
 ## Tips
@@ -199,17 +160,17 @@ gg_playback(
 - **Frame count vs file size.** GIFs are uncompressed across frames, so a
   monthly cadence over five years (60 frames) renders nicely; a daily cadence
   produces a multi-megabyte file. Pick a step that yields 20–80 frames.
-- **Final-frame hold.** `last_image_duration` (in seconds) gives readers time
-  to absorb the end state before the GIF loops. 3–5 seconds is a good range.
+- **Final-frame hold.** `last_duration` (in seconds) gives readers time to
+  absorb the end state before the GIF loops. 3–5 seconds is a good range.
 - **Consistent axes.** Some plots auto-scale per frame, which makes axes
   jitter as data is added. If that bothers you, pass an explicit `date_begin`
   /`date_end` so the x-axis stays fixed across frames.
-- **Spiral plots are not ggplots.** `spiral_points_plot()`,
-  `spiral_heatmap_plot()`, and `spiral_horizon_plot()` draw with the `grid`
-  /`spiralize` graphics system, so `camcorder::gg_record()` won't capture them.
-  To animate those, render each frame to a numbered PNG with
-  `grDevices::png()` / `dev.off()` and then call `gifski::gifski()` directly
-  on the file list.
+- **Spiral plots.** `spiral_points_plot()`, `spiral_heatmap_plot()`, and
+  `spiral_horizon_plot()` draw with the `grid`/`spiralize` graphics system
+  rather than returning ggplot objects. They are already compatible with the
+  `ggsave()` + `gifski::gifski()` approach used here — save each frame with
+  `grDevices::png()` / `dev.off()` and pass the resulting file list directly
+  to `gifski::gifski()`.
 
 ## Embedding in your README
 

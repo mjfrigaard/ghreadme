@@ -86,3 +86,11 @@ test_that("collect_git_commits returns results sorted by timestamp", {
   result <- collect_git_commits(user = "mjfrigaard")
   expect_equal(result$timestamp, sort(result$timestamp))
 })
+
+test_that("collect_git_commits includes forks when include_forks = TRUE", {
+  skip_if_not_installed("gh")
+  local_mocked_bindings(gh = fake_gh, .package = "gh")
+
+  result <- collect_git_commits(user = "mjfrigaard", include_forks = TRUE)
+  expect_true("repo-fork" %in% result$repo)
+})

@@ -1,7 +1,7 @@
 #' Create a GIF of who_am_i() console output
 #'
 #' Records each message from [who_am_i()] as a ggplot frame using
-#' `camcorder`, then renders the frames to a gif with `gifski`.
+#' `ggplot2` and `ggsave()`, then assembles the frames into a GIF with `gifski`.
 #'
 #' @param name Your name
 #' @param likes Your likes
@@ -12,7 +12,9 @@
 #' @param output path for the output gif (default `"intro.gif"`)
 #' @param width gif width in pixels (default `800`)
 #' @param height gif height in pixels (default `400`)
-#' @param frame_duration seconds each frame is shown (default `1.5`)
+#' @param frame_duration seconds each middle frame is shown (default `1.5`)
+#' @param first_duration seconds the first frame is shown (default `1`)
+#' @param last_duration seconds the last frame is shown (default `4`)
 #'
 #' @return invisibly returns `output` path
 #' @export
@@ -36,14 +38,10 @@ who_am_i_gif <- function(name, likes, learn, work, collab,
                           output         = "intro.gif",
                           width          = 800,
                           height         = 400,
-                          frame_duration = 1.5) {
+                          frame_duration = 1.5,
+                          first_duration = 1,
+                          last_duration  = 4) {
 
-  if (!requireNamespace("camcorder", quietly = TRUE)) {
-    cli::cli_abort(
-      "Package {.pkg camcorder} is required.",
-      "i" = "Install with: {.code install.packages('camcorder')}"
-    )
-  }
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     cli::cli_abort(
       "Package {.pkg ggplot2} is required.",
@@ -64,15 +62,9 @@ who_am_i_gif <- function(name, likes, learn, work, collab,
 
   n <- length(messages)
 
-  camcorder::gg_record(
-    dir    = tempdir(),
-    device = "png",
-    width  = width,
-    height = height,
-    units  = "px",
-    dpi    = 96,
-    bg     = "#1e1e1e"
-  )
+  # Unique temp dir per call to avoid stale frames from previous runs
+  frame_dir <- file.path(tempdir(), paste0("who-am-i-frames-", as.integer(Sys.time())))
+  dir.create(frame_dir, showWarnings = FALSE, recursive = TRUE)
 
   for (i in seq_along(messages)) {
     shown <- messages[seq_len(i)]
@@ -97,15 +89,26 @@ who_am_i_gif <- function(name, likes, learn, work, collab,
         plot.background  = ggplot2::element_rect(fill = "#1e1e1e", colour = NA),
         panel.background = ggplot2::element_rect(fill = "#1e1e1e", colour = NA)
       )
-    print(p)
+
+    ggplot2::ggsave(
+      filename = file.path(frame_dir, sprintf("%04d.png", i)),
+      plot     = p,
+      width    = width,
+      height   = height,
+      units    = "px",
+      dpi      = 96,
+      bg       = "#1e1e1e"
+    )
   }
 
-  camcorder::gg_playback(
-    name                 = output,
-    first_image_duration = 1,
-    last_image_duration  = 4,
-    frame_duration       = frame_duration,
-    image_resize         = width
+  make_gif(
+    frame_dir      = frame_dir,
+    output         = output,
+    width          = width,
+    height         = height,
+    first_duration = first_duration,
+    frame_duration = frame_duration,
+    last_duration  = last_duration
   )
 
   invisible(output)

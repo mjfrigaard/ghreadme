@@ -28,6 +28,16 @@ commits <- collect_git_commits(
 )
 ```
 
+Calling
+[`collect_git_commits()`](https://mjfrigaard.github.io/ghreadme/reference/collect_git_commits.md)
+with no `include` argument returns the original commits-only tibble
+shape, which is exactly what the plot functions expect. If you also want
+star counts, authored issues, or authored pull requests in the same
+call, see
+[`vignette("gh-stats")`](https://mjfrigaard.github.io/ghreadme/articles/gh-stats.md);
+the multi-include path returns a named list, in which case the recipes
+here would use `stats$commits` in place of the bare `commits` object.
+
 ## How the approach works
 
 Each recipe follows the same pattern:
@@ -132,7 +142,8 @@ make_gif(cal_dir, "calendar.gif",
 The third pattern cycles through repositories instead of through time —
 [`punchcard_plot()`](https://mjfrigaard.github.io/ghreadme/reference/punchcard_plot.md)
 is rendered once per repo, so the GIF feels like flipping through a deck
-of cards.
+of cards. The example below ranks repos by commit count; see the “Rank
+by stars” tip below for an API-backed alternative.
 
 ``` r
 
@@ -164,12 +175,15 @@ make_gif(punch_dir, "punchcard.gif",
   a monthly cadence over five years (60 frames) renders nicely; a daily
   cadence produces a multi-megabyte file. Pick a step that yields 20–80
   frames.
+
 - **Final-frame hold.** `last_duration` (in seconds) gives readers time
   to absorb the end state before the GIF loops. 3–5 seconds is a good
   range.
+
 - **Consistent axes.** Some plots auto-scale per frame, which makes axes
   jitter as data is added. If that bothers you, pass an explicit
   `date_begin` /`date_end` so the x-axis stays fixed across frames.
+
 - **Spiral plots.**
   [`spiral_points_plot()`](https://mjfrigaard.github.io/ghreadme/reference/spiral_points_plot.md),
   [`spiral_heatmap_plot()`](https://mjfrigaard.github.io/ghreadme/reference/spiral_heatmap_plot.md),
@@ -185,6 +199,23 @@ make_gif(punch_dir, "punchcard.gif",
   resulting file list directly to
   [`gifski::gifski()`](https://r-rust.r-universe.dev/gifski/reference/gifski.html).
 
+- **Rank by stars.** The punchcard recipe ranks repos by commit count.
+  To rank by GitHub stars instead, ask
+  [`collect_git_commits()`](https://mjfrigaard.github.io/ghreadme/reference/collect_git_commits.md)
+  for both types at once and pull the carousel order from the `stars`
+  element:
+
+  ``` r
+
+  stats <- collect_git_commits(
+    user    = "your-username",
+    emails  = "you@example.com",
+    include = c("commits", "stars")
+  )
+  top_repos <- head(stats$stars$repo, 6)
+  # then iterate with punchcard_plot(stats$commits, repo = top_repos[[i]], ...)
+  ```
+
 ## Embedding in your README
 
 Drop the rendered GIF into your profile `README.Rmd` the same way as any
@@ -194,4 +225,6 @@ someone loads your profile:
     ![](cumulative.gif)
 
 Re-knit `README.Rmd` to refresh `README.md`, then commit the GIF
-alongside it.
+alongside it. For an end-to-end setup (scaffolding the Rmd, scheduling
+re-knits via GitHub Actions), see
+[`vignette("ghreadme")`](https://mjfrigaard.github.io/ghreadme/articles/ghreadme.md).

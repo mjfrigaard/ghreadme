@@ -90,6 +90,14 @@ plot helpers from <code>ghreadme</code>:</p>
 <span>  user   <span class="op">=</span> <span class="st">"your-username"</span>,</span>
 <span>  emails <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"you@example.com"</span>, <span class="st">"you@work.example.com"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
+<p>Calling <code><a href="../reference/collect_git_commits.html">collect_git_commits()</a></code> with no
+<code>include</code> argument returns the original commits-only tibble
+shape, which is exactly what the plot functions expect. If you also want
+star counts, authored issues, or authored pull requests in the same
+call, see <a href="gh-stats.html"><code>vignette("gh-stats")</code></a>;
+the multi-include path returns a named list, in which case the recipes
+here would use <code>stats$commits</code> in place of the bare
+<code>commits</code> object.</p>
 </div>
 <div class="section level2">
 <h2 id="how-the-approach-works">How the approach works<a class="anchor" aria-label="anchor" href="#how-the-approach-works"></a>
@@ -189,7 +197,9 @@ is honoured during filtering, all you need to do is bump
 </h2>
 <p>The third pattern cycles through repositories instead of through time
 — <code><a href="../reference/punchcard_plot.html">punchcard_plot()</a></code> is rendered once per repo, so the GIF
-feels like flipping through a deck of cards.</p>
+feels like flipping through a deck of cards. The example below ranks
+repos by commit count; see the “Rank by stars” tip below for an
+API-backed alternative.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">top_repos</span> <span class="op">&lt;-</span> <span class="va">commits</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">repo</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -216,22 +226,18 @@ feels like flipping through a deck of cards.</p>
 <h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
 </h2>
 <ul>
-<li>
-<strong>Frame count vs file size.</strong> GIFs are uncompressed
+<li><p><strong>Frame count vs file size.</strong> GIFs are uncompressed
 across frames, so a monthly cadence over five years (60 frames) renders
 nicely; a daily cadence produces a multi-megabyte file. Pick a step that
-yields 20–80 frames.</li>
-<li>
-<strong>Final-frame hold.</strong> <code>last_duration</code> (in
+yields 20–80 frames.</p></li>
+<li><p><strong>Final-frame hold.</strong> <code>last_duration</code> (in
 seconds) gives readers time to absorb the end state before the GIF
-loops. 3–5 seconds is a good range.</li>
-<li>
-<strong>Consistent axes.</strong> Some plots auto-scale per frame,
-which makes axes jitter as data is added. If that bothers you, pass an
-explicit <code>date_begin</code> /<code>date_end</code> so the x-axis
-stays fixed across frames.</li>
-<li>
-<strong>Spiral plots.</strong> <code><a href="../reference/spiral_points_plot.html">spiral_points_plot()</a></code>,
+loops. 3–5 seconds is a good range.</p></li>
+<li><p><strong>Consistent axes.</strong> Some plots auto-scale per
+frame, which makes axes jitter as data is added. If that bothers you,
+pass an explicit <code>date_begin</code> /<code>date_end</code> so the
+x-axis stays fixed across frames.</p></li>
+<li><p><strong>Spiral plots.</strong> <code><a href="../reference/spiral_points_plot.html">spiral_points_plot()</a></code>,
 <code><a href="../reference/spiral_heatmap_plot.html">spiral_heatmap_plot()</a></code>, and
 <code><a href="../reference/spiral_horizon_plot.html">spiral_horizon_plot()</a></code> draw with the
 <code>grid</code>/<code>spiralize</code> graphics system rather than
@@ -239,7 +245,21 @@ returning ggplot objects. They are already compatible with the
 <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> + <code><a href="https://r-rust.r-universe.dev/gifski/reference/gifski.html" class="external-link">gifski::gifski()</a></code> approach used here
 — save each frame with <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">grDevices::png()</a></code> /
 <code><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off()</a></code> and pass the resulting file list directly to
-<code><a href="https://r-rust.r-universe.dev/gifski/reference/gifski.html" class="external-link">gifski::gifski()</a></code>.</li>
+<code><a href="https://r-rust.r-universe.dev/gifski/reference/gifski.html" class="external-link">gifski::gifski()</a></code>.</p></li>
+<li>
+<p><strong>Rank by stars.</strong> The punchcard recipe ranks repos
+by commit count. To rank by GitHub stars instead, ask
+<code><a href="../reference/collect_git_commits.html">collect_git_commits()</a></code> for both types at once and pull the
+carousel order from the <code>stars</code> element:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/collect_git_commits.html">collect_git_commits</a></span><span class="op">(</span></span>
+<span>  user    <span class="op">=</span> <span class="st">"your-username"</span>,</span>
+<span>  emails  <span class="op">=</span> <span class="st">"you@example.com"</span>,</span>
+<span>  include <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"commits"</span>, <span class="st">"stars"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">top_repos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">stats</span><span class="op">$</span><span class="va">stars</span><span class="op">$</span><span class="va">repo</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co"># then iterate with punchcard_plot(stats$commits, repo = top_repos[[i]], ...)</span></span></code></pre></div>
+</li>
 </ul>
 </div>
 <div class="section level2">
@@ -250,7 +270,8 @@ same way as any image — typically right above the badge block so it
 plays as soon as someone loads your profile:</p>
 <pre><code>![](cumulative.gif)</code></pre>
 <p>Re-knit <code>README.Rmd</code> to refresh <code>README.md</code>,
-then commit the GIF alongside it.</p>
+then commit the GIF alongside it. For an end-to-end setup (scaffolding
+the Rmd, scheduling re-knits via GitHub Actions), see <a href="ghreadme.html"><code>vignette("ghreadme")</code></a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

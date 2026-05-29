@@ -34,11 +34,13 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/ghreadme.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/viz-git-gif.html">Animating Git visualizations with gifski</a></li>
+<li><a class="dropdown-item" href="articles/gh-stats.html">Pulling stars, issues, and pull requests</a></li>
+    <li><a class="dropdown-item" href="articles/viz-git-gif.html">Animating Git visualizations with gifski</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -67,52 +69,86 @@
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mjfrigaard/ghreadme"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>Load the package, create a repo with the same name as your username (i.e., <code>https://github.com/&lt;username&gt;/&lt;username&gt;</code>), then add the following to your <code>README.Rmd</code> file (set <code>echo=FALSE</code> to hide the code).</p>
+<p>First, create a profile repository on GitHub whose name matches your username (i.e., <code>https://github.com/&lt;username&gt;/&lt;username&gt;</code>) and clone it locally. Then scaffold a starter <code>README.Rmd</code> from R:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mjfrigaard.github.io/ghreadme/">ghreadme</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mjfrigaard.github.io/ghreadme/">ghreadme</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/use_profile_readme.html">use_profile_readme</a></span><span class="op">(</span></span>
+<span>  name     <span class="op">=</span> <span class="st">"Martin"</span>,</span>
+<span>  likes    <span class="op">=</span> <span class="st">"#rstats and data visualization."</span>,</span>
+<span>  learn    <span class="op">=</span> <span class="st">"Shiny app development, Python, and Linux"</span>,</span>
+<span>  work     <span class="op">=</span> <span class="st">"R package development tools."</span>,</span>
+<span>  collab   <span class="op">=</span> <span class="st">"#rstats packages for data science."</span>,</span>
+<span>  username <span class="op">=</span> <span class="st">"mjfrigaard"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="reference/use_profile_readme.html">use_profile_readme()</a></code> writes a starter <code>README.Rmd</code> pre-wired to call <code><a href="reference/who_am_i.html">who_am_i()</a></code> and <code><a href="reference/gh_badges.html">gh_badges()</a></code>, with commented-out chunks for <code><a href="reference/who_am_i_gif.html">who_am_i_gif()</a></code> and <code><a href="reference/so_rep.html">so_rep()</a></code> you can switch on. Knit the file (or click <em>Knit</em> in RStudio) to regenerate <code>README.md</code>, then commit both files and push.</p>
+</div>
+<div class="section level2">
+<h2 id="automate-the-rebuild">Automate the rebuild<a class="anchor" aria-label="anchor" href="#automate-the-rebuild"></a>
+</h2>
+<p><code><a href="reference/use_profile_readme_action.html">use_profile_readme_action()</a></code> drops a GitHub Actions workflow into <code>.github/workflows/profile-readme.yaml</code> that re-renders <code>README.Rmd</code> on a schedule so your stats (and any embedded GIFs) stay current:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/use_profile_readme_action.html">use_profile_readme_action</a></span><span class="op">(</span><span class="op">)</span>                    <span class="co"># Sundays at 06:00 UTC</span></span>
+<span><span class="fu"><a href="reference/use_profile_readme_action.html">use_profile_readme_action</a></span><span class="op">(</span>cron <span class="op">=</span> <span class="st">"0 6 * * 1"</span><span class="op">)</span>  <span class="co"># Mondays at 06:00 UTC</span></span></code></pre></div>
+<p>The workflow installs <code>ghreadme</code>, renders <code>README.Rmd</code>, and commits the regenerated <code>README.md</code> (and any GIF artifacts) if anything changed.</p>
+<p>See <code><a href="articles/ghreadme.html">vignette("ghreadme")</a></code> for the full walkthrough.</p>
+</div>
+<div class="section level2">
+<h2 id="what-the-scaffold-generates">What the scaffold generates<a class="anchor" aria-label="anchor" href="#what-the-scaffold-generates"></a>
+</h2>
+<div class="section level3">
+<h3 id="who_am_i">
+<code>who_am_i()</code><a class="anchor" aria-label="anchor" href="#who_am_i"></a>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mjfrigaard.github.io/ghreadme/">ghreadme</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/who_am_i.html">who_am_i</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Martin"</span>,</span>
 <span>  likes <span class="op">=</span> <span class="st">"#rstats and data visualization."</span>,</span>
 <span>  learn <span class="op">=</span> <span class="st">"Shiny app development, Python, and Linux"</span>,</span>
 <span>  work <span class="op">=</span> <span class="st">"R package development tools."</span>,</span>
 <span>  collab <span class="op">=</span> <span class="st">"#rstats packages for data science."</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>     👋 Hi, my name is Martin.</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>     👀 I like <span class="co">#rstats and data visualization.</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>     🌱 I<span class="st">'m learning about Shiny app development, Python, and Linux</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="st">     📦 I'</span>m currently working on R package development tools.</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>     💞 I<span class="st">'d love to collaborate on #rstats packages for data science.</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="st">     📫 Want to connect? Use the badges below...</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>     👋 Hi, my name is Martin.</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>     👀 I like <span class="co">#rstats and data visualization.</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>     🌱 I<span class="st">'m learning about Shiny app development, Python, and Linux</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="st">     📦 I'</span>m currently working on R package development tools.</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>     💞 I<span class="st">'d love to collaborate on #rstats packages for data science.</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="st">     📫 Want to connect? Use the badges below...</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="github-badges">GitHub badges<a class="anchor" aria-label="anchor" href="#github-badges"></a>
-</h2>
+<div class="section level3">
+<h3 id="github-badges">GitHub badges<a class="anchor" aria-label="anchor" href="#github-badges"></a>
+</h3>
 <p>For GitHub badges from <a href="https://github-profile-summary-cards.vercel.app/demo.html" class="external-link">vercel.app</a>, include the call in a code chunk with <code>results</code> set to <code>asis</code>.</p>
-<p>Example:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>```{r gh_badges, results='asis'}</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>gh_badges(username = "mjfrigaard", </span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  badge = c("details", "stats", "repo_lang"), </span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  theme = "dark")</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>```</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>```{r gh_badges, results='asis'}</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>gh_badges(username = "mjfrigaard",</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  badge = c("details", "stats", "repo_lang"),</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  theme = "dark")</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>```</span></code></pre></div>
 <p><img src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=mjfrigaard&amp;theme=github_dark"><img src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=mjfrigaard&amp;theme=github_dark"><img src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=mjfrigaard&amp;theme=github_dark"></p>
 </div>
-<div class="section level2">
-<h2 id="stack-overflow-reputation">Stack Overflow reputation<a class="anchor" aria-label="anchor" href="#stack-overflow-reputation"></a>
-</h2>
-<p>Example:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>```{r so_rep, results='asis'}</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>so_rep(</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  username = "martin-frigaard", </span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  user_id = "4926446")</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>```</span></code></pre></div>
+<div class="section level3">
+<h3 id="stack-overflow-reputation">Stack Overflow reputation<a class="anchor" aria-label="anchor" href="#stack-overflow-reputation"></a>
+</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>```{r so_rep, results='asis'}</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>so_rep(</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  username = "martin-frigaard",</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  user_id = "4926446")</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>```</span></code></pre></div>
 <p><a href="https://stackoverflow.com/users/4926446/martin-frigaard" target="_blank" class="external-link"> <img alt="StackOverflow" src="https://stackoverflow-badge.vercel.app/?userID=4926446"></a></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="visualizing-your-git-history">Visualizing your git history<a class="anchor" aria-label="anchor" href="#visualizing-your-git-history"></a>
+</h2>
+<p><code>ghreadme</code> also includes commit-history visualizations (<code><a href="reference/calendar_heatmap_plot.html">calendar_heatmap_plot()</a></code>, <code><a href="reference/punchcard_plot.html">punchcard_plot()</a></code>, <code><a href="reference/cumulative_line_plot.html">cumulative_line_plot()</a></code>, and the spiral plots) plus a <code><a href="reference/make_gif.html">make_gif()</a></code> helper for stitching frames together. See <code><a href="articles/viz-git-gif.html">vignette("viz-git-gif")</a></code> for recipes.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

@@ -32,11 +32,13 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/ghreadme.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/viz-git-gif.html">Animating Git visualizations with gifski</a></li>
+<li><a class="dropdown-item" href="../articles/gh-stats.html">Pulling stars, issues, and pull requests</a></li>
+    <li><a class="dropdown-item" href="../articles/viz-git-gif.html">Animating Git visualizations with gifski</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -69,7 +71,7 @@
     
 <p>The data visualization functions in <code>ghreadme</code> return
 <code>ggplot</code> objects, which means each call can be saved as a PNG
-frame with <code>ggsave()</code> and then stitched into an animated GIF
+frame with <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> and then stitched into an animated GIF
 with <a href="https://github.com/r-rust/gifski" class="external-link"><code>gifski</code></a>.
 This vignette walks through three patterns for turning a static plot
 into an animation that highlights how your commit activity evolves over
@@ -96,7 +98,7 @@ plot helpers from <code>ghreadme</code>:</p>
 <ol style="list-style-type: decimal">
 <li>Create a temporary directory for the PNG frames.</li>
 <li>Loop, building one ggplot per frame and writing it with
-<code>ggsave()</code>.</li>
+<code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code>.</li>
 <li>Call <code><a href="../reference/make_gif.html">make_gif()</a></code> to assemble the frames into a GIF.</li>
 </ol>
 <p><code><a href="../reference/make_gif.html">make_gif()</a></code> is exported from <code>ghreadme</code> and
@@ -139,7 +141,7 @@ commits after filtering.”</p>
 <span>    date_end   <span class="op">=</span> <span class="va">date_seq</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>    top_n      <span class="op">=</span> <span class="fl">8</span></span>
 <span>  <span class="op">)</span></span>
-<span>  <span class="fu">ggsave</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">cum_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%04d.png"</span>, <span class="va">i</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    plot     <span class="op">=</span> <span class="va">p</span>,</span>
 <span>    width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">600</span>, units <span class="op">=</span> <span class="st">"px"</span>, dpi <span class="op">=</span> <span class="fl">96</span>, bg <span class="op">=</span> <span class="st">"white"</span></span>
@@ -171,7 +173,7 @@ is honoured during filtering, all you need to do is bump
 <span>    date_end   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">years</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, <span class="st">"-12-31"</span><span class="op">)</span>,</span>
 <span>    title      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Through"</span>, <span class="va">years</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span>  <span class="fu">ggsave</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">cal_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%04d.png"</span>, <span class="va">i</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    plot     <span class="op">=</span> <span class="va">p</span>,</span>
 <span>    width <span class="op">=</span> <span class="fl">1100</span>, height <span class="op">=</span> <span class="fl">700</span>, units <span class="op">=</span> <span class="st">"px"</span>, dpi <span class="op">=</span> <span class="fl">96</span>, bg <span class="op">=</span> <span class="st">"white"</span></span>
@@ -199,7 +201,7 @@ feels like flipping through a deck of cards.</p>
 <span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">top_repos</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/punchcard_plot.html">punchcard_plot</a></span><span class="op">(</span><span class="va">commits</span>, repo <span class="op">=</span> <span class="va">top_repos</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, title <span class="op">=</span> <span class="va">top_repos</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span>  <span class="fu">ggsave</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">punch_dir</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%04d.png"</span>, <span class="va">i</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    plot     <span class="op">=</span> <span class="va">p</span>,</span>
 <span>    width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">500</span>, units <span class="op">=</span> <span class="st">"px"</span>, dpi <span class="op">=</span> <span class="fl">96</span>, bg <span class="op">=</span> <span class="st">"white"</span></span>
@@ -234,7 +236,7 @@ stays fixed across frames.</li>
 <code><a href="../reference/spiral_horizon_plot.html">spiral_horizon_plot()</a></code> draw with the
 <code>grid</code>/<code>spiralize</code> graphics system rather than
 returning ggplot objects. They are already compatible with the
-<code>ggsave()</code> + <code><a href="https://r-rust.r-universe.dev/gifski/reference/gifski.html" class="external-link">gifski::gifski()</a></code> approach used here
+<code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave()</a></code> + <code><a href="https://r-rust.r-universe.dev/gifski/reference/gifski.html" class="external-link">gifski::gifski()</a></code> approach used here
 — save each frame with <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">grDevices::png()</a></code> /
 <code><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off()</a></code> and pass the resulting file list directly to
 <code><a href="https://r-rust.r-universe.dev/gifski/reference/gifski.html" class="external-link">gifski::gifski()</a></code>.</li>

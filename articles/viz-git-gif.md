@@ -1,7 +1,8 @@
 # Animating Git visualizations with gifski
 
 The data visualization functions in `ghreadme` return `ggplot` objects,
-which means each call can be saved as a PNG frame with `ggsave()` and
+which means each call can be saved as a PNG frame with
+[`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html) and
 then stitched into an animated GIF with
 [`gifski`](https://github.com/r-rust/gifski). This vignette walks
 through three patterns for turning a static plot into an animation that
@@ -32,7 +33,8 @@ commits <- collect_git_commits(
 Each recipe follows the same pattern:
 
 1.  Create a temporary directory for the PNG frames.
-2.  Loop, building one ggplot per frame and writing it with `ggsave()`.
+2.  Loop, building one ggplot per frame and writing it with
+    [`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html).
 3.  Call
     [`make_gif()`](https://mjfrigaard.github.io/ghreadme/reference/make_gif.md)
     to assemble the frames into a GIF.
@@ -174,7 +176,8 @@ make_gif(punch_dir, "punchcard.gif",
   and
   [`spiral_horizon_plot()`](https://mjfrigaard.github.io/ghreadme/reference/spiral_horizon_plot.md)
   draw with the `grid`/`spiralize` graphics system rather than returning
-  ggplot objects. They are already compatible with the `ggsave()` +
+  ggplot objects. They are already compatible with the
+  [`ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html) +
   [`gifski::gifski()`](https://r-rust.r-universe.dev/gifski/reference/gifski.html)
   approach used here — save each frame with
   [`grDevices::png()`](https://rdrr.io/r/grDevices/png.html) /

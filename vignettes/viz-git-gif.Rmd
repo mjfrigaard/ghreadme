@@ -39,6 +39,14 @@ commits <- collect_git_commits(
 )
 ```
 
+Calling `collect_git_commits()` with no `include` argument returns the
+original commits-only tibble shape, which is exactly what the plot
+functions expect. If you also want star counts, authored issues, or
+authored pull requests in the same call, see
+[`vignette("gh-stats")`](gh-stats.html); the multi-include path returns a
+named list, in which case the recipes here would use `stats$commits` in
+place of the bare `commits` object.
+
 ## How the approach works
 
 Each recipe follows the same pattern:
@@ -130,7 +138,8 @@ make_gif(cal_dir, "calendar.gif",
 
 The third pattern cycles through repositories instead of through time —
 `punchcard_plot()` is rendered once per repo, so the GIF feels like flipping
-through a deck of cards.
+through a deck of cards. The example below ranks repos by commit count;
+see the "Rank by stars" tip below for an API-backed alternative.
 
 ```{r recipe-punchcard}
 top_repos <- commits |>
@@ -171,6 +180,19 @@ make_gif(punch_dir, "punchcard.gif",
   `ggsave()` + `gifski::gifski()` approach used here — save each frame with
   `grDevices::png()` / `dev.off()` and pass the resulting file list directly
   to `gifski::gifski()`.
+- **Rank by stars.** The punchcard recipe ranks repos by commit count.
+  To rank by GitHub stars instead, ask `collect_git_commits()` for both
+  types at once and pull the carousel order from the `stars` element:
+
+  ```{r tip-rank-by-stars}
+  stats <- collect_git_commits(
+    user    = "your-username",
+    emails  = "you@example.com",
+    include = c("commits", "stars")
+  )
+  top_repos <- head(stats$stars$repo, 6)
+  # then iterate with punchcard_plot(stats$commits, repo = top_repos[[i]], ...)
+  ```
 
 ## Embedding in your README
 
@@ -183,3 +205,5 @@ loads your profile:
 ~~~
 
 Re-knit `README.Rmd` to refresh `README.md`, then commit the GIF alongside it.
+For an end-to-end setup (scaffolding the Rmd, scheduling re-knits via
+GitHub Actions), see [`vignette("ghreadme")`](ghreadme.html).

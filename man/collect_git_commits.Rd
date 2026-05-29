@@ -2,29 +2,75 @@
 % Please edit documentation in R/collect_git_commits.R
 \name{collect_git_commits}
 \alias{collect_git_commits}
-\title{Collect commits from all public repos of a GitHub user}
+\title{Collect activity from a GitHub user's account}
 \usage{
 collect_git_commits(
   user,
   emails = NULL,
   since = NULL,
   until = NULL,
-  include_forks = FALSE
+  include_forks = FALSE,
+  include = "commits"
 )
 }
 \arguments{
 \item{user}{GitHub username (e.g., "mjfrigaard").}
 
-\item{emails}{Character vector of author emails to match (case-insensitive).}
+\item{emails}{Character vector of author emails to match
+(case-insensitive). Applied to \code{commits} only.}
 
-\item{since, until}{Optional date or POSIXct bounds.}
+\item{since, until}{Optional date or POSIXct bounds. For commits, used as
+API filters; for issues and pull requests, applied to \code{created_at}.}
 
-\item{include_forks}{Logical; include forked repos.}
+\item{include_forks}{Logical; include forked repos when listing the
+user's own repos (affects \code{commits} and \code{stars}).}
+
+\item{include}{Character vector; any of \code{"commits"}, \code{"stars"},
+\code{"issues"}, \code{"prs"}. Default \code{"commits"}.}
 }
 \value{
-A tibble, one row per commit.
+When \code{include = "commits"} (the default), a tibble with one row
+per commit and derived \code{date}/\code{hour}/\code{weekday}/\code{year} columns. For any
+other value of \code{include}, a named list of tibbles with elements named
+after the requested types.
+\itemize{
+\item \code{commits}: \code{repo}, \code{sha}, \code{timestamp}, \code{author_name}, \code{author_email},
+\code{message}, \code{local_ts}, \code{date}, \code{hour}, \code{weekday}, \code{year}.
+\item \code{stars}: \code{repo}, \code{stargazers_count}, \code{forks_count}, \code{watchers_count},
+\code{language}, \code{description}, \code{created_at}, \code{updated_at}. Rows are the
+user's own repos (star counts \emph{received}, not stars given).
+\item \code{issues}: \code{repo} (owner/name), \code{number}, \code{title}, \code{state},
+\code{created_at}, \code{closed_at}, \code{url}. Issues authored by \code{user} across
+GitHub, via \verb{/search/issues}.
+\item \code{prs}: same columns as \code{issues}. Pull requests authored by \code{user}.
+}
 }
 \description{
-Pulls every commit authored by the specified emails across all non-fork
-repos owned by \code{user}, via the GitHub REST API.
+Pulls commit metadata and (optionally) star, issue, and pull-request data
+for a GitHub user, via the REST API. Defaults reproduce the original
+commits-only schema; richer profile stats are opt-in via \code{include}.
+}
+\note{
+\code{gh::gh()} reads \code{GITHUB_PAT} from the environment. Unauthenticated
+calls hit a 60-request/hour rate limit and will fail for users with
+many repos. The \verb{/search/issues} endpoint is additionally capped at
+1000 results per query.
+}
+\examples{
+\dontrun{
+# Original behavior: commits-only tibble.
+commits <- collect_git_commits(
+  user   = "mjfrigaard",
+  emails = c("mjfrigaard@pm.me", "mjfrigaard@gmail.com")
+)
+
+# Full profile stats as a named list of tibbles.
+stats <- collect_git_commits(
+  user    = "mjfrigaard",
+  emails  = "mjfrigaard@pm.me",
+  include = c("commits", "stars", "issues", "prs")
+)
+stats$stars
+stats$prs
+}
 }

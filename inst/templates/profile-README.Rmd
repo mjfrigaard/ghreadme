@@ -1,0 +1,61 @@
+---
+title: "Hi there 👋"
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file. -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo      = FALSE,
+  message   = FALSE,
+  warning   = FALSE,
+  out.width = "100%"
+)
+library(ghreadme)
+```
+
+```{r who_am_i, results = "asis"}
+who_am_i(
+  name   = "{{name}}",
+  likes  = "{{likes}}",
+  learn  = "{{learn}}",
+  work   = "{{work}}",
+  collab = "{{collab}}"
+)
+```
+
+## GitHub activity
+
+```{r gh_badges, results = "asis"}
+gh_badges(
+  username = "{{username}}",
+  badge    = c("details", "stats", "repo_lang"),
+  theme    = "dark"
+)
+```
+
+<!--
+Optional: render an animated GIF intro instead of plain text. Embed the GIF
+with `![](intro.gif)` above the badges, then flip `eval = TRUE`:
+
+```{r who_am_i_gif, eval = FALSE}
+who_am_i_gif(
+  name   = "{{name}}",
+  likes  = "{{likes}}",
+  learn  = "{{learn}}",
+  work   = "{{work}}",
+  collab = "{{collab}}",
+  output = "intro.gif"
+)
+```
+
+Optional: Stack Overflow reputation badge.
+
+```{r so_rep, eval = FALSE, results = "asis"}
+so_rep(
+  username = "your-so-username",
+  user_id  = "00000"
+)
+```
+-->

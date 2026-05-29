@@ -1,0 +1,42 @@
+# Re-knit the profile README on a schedule so GIFs and stats stay fresh.
+name: Rebuild profile README
+
+on:
+  schedule:
+    - cron: "{{cron}}"
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::rmarkdown
+            any::ggplot2
+            any::gifski
+            github::{{repo}}
+
+      - name: Render README
+        run: Rscript -e 'rmarkdown::render("README.Rmd")'
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md *.gif 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "Rebuild profile README"
+            git push
+          fi

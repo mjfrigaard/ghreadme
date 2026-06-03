@@ -15,16 +15,17 @@ highlights how your commit activity evolves over time.
 install.packages(c("gifski", "ggplot2"))
 ```
 
-The recipes below also assume the data-collection and ggplot-based plot
-helpers from `ghreadme`:
+The recipes below also assume the data-collection and `ggplot`-based
+plot helpers from `ghreadme`:
 
 ``` r
 
 library(ghreadme)
 
-commits <- collect_git_commits(
-  user   = "your-username",
-  emails = c("you@example.com", "you@work.example.com")
+stats <- collect_git_commits(
+  user    = "your-username",
+  emails  = "you@example.com",
+  include = c("commits", "stars", "issues", "prs")
 )
 ```
 
@@ -63,9 +64,9 @@ The three recipes below all follow this pattern and only differ in
 ## Recipe 1: cumulative commits, sliding the end date
 
 [`cumulative_line_plot()`](https://mjfrigaard.github.io/ghreadme/reference/cumulative_line_plot.md)
-already shows growth over time, but stepping the `date_end` forward one
-month at a time makes that growth feel kinetic — lines appear, lengthen,
-and overtake one another as your repos accumulate commits.
+already shows growth over time, but moving the `date_end` forward one
+month at a time makes that growth feel kinetic. The lines appear,
+lengthen, and overtake one another as your repos accumulate commits.
 
 > **Note:** Start `date_seq` one month *after* `date_begin`. If
 > `date_end` equals `date_begin` on the first iteration and no commits
@@ -77,7 +78,7 @@ and overtake one another as your repos accumulate commits.
 
 date_seq <- seq(
   from = as.Date("2023-02-01"),  # one month after date_begin
-  to   = max(commits$date),
+  to   = max(stats$commits$date),
   by   = "1 month"
 )
 
@@ -86,7 +87,7 @@ dir.create(cum_dir, showWarnings = FALSE, recursive = TRUE)
 
 for (i in seq_along(date_seq)) {
   p <- cumulative_line_plot(
-    commits,
+    stats$commits,
     date_begin = "2023-01-01",
     date_end   = date_seq[[i]],
     top_n      = 8
@@ -108,19 +109,19 @@ make_gif(cum_dir, "cumulative.gif",
 [`calendar_heatmap_plot()`](https://mjfrigaard.github.io/ghreadme/reference/calendar_heatmap_plot.md)
 is a strong fit for a slow reveal: each frame adds one more year of
 history, so the GIF builds toward the present. Because the plot’s
-`date_begin` argument is honoured during filtering, all you need to do
-is bump `date_end` to the end of the next year.
+`date_begin` argument is honored during filtering, all you need to do is
+bump `date_end` to the end of the next year.
 
 ``` r
 
-years <- sort(unique(commits$year))
+years <- sort(unique(stats$commits$year))
 
 cal_dir <- file.path(tempdir(), "calendar-frames")
 dir.create(cal_dir, showWarnings = FALSE, recursive = TRUE)
 
 for (i in seq_along(years)) {
   p <- calendar_heatmap_plot(
-    commits,
+    stats$commits,
     date_begin = paste0(min(years), "-01-01"),
     date_end   = paste0(years[[i]], "-12-31"),
     title      = paste("Through", years[[i]])
@@ -139,24 +140,28 @@ make_gif(cal_dir, "calendar.gif",
 
 ## Recipe 3: punchcard carousel across repos
 
-The third pattern cycles through repositories instead of through time —
+The third pattern cycles through repositories instead of through time.
+The
 [`punchcard_plot()`](https://mjfrigaard.github.io/ghreadme/reference/punchcard_plot.md)
-is rendered once per repo, so the GIF feels like flipping through a deck
-of cards. The example below ranks repos by commit count; see the “Rank
-by stars” tip below for an API-backed alternative.
+graph is rendered once per repo, so the GIF feels like flipping through
+a deck of cards. The example below ranks repos by commit count; see the
+“Rank by stars” tip below for an API-backed alternative.
 
 ``` r
 
-top_repos <- commits |>
+top_repos <- stats$commits |>
   dplyr::count(repo, sort = TRUE) |>
   dplyr::slice_head(n = 6) |>
   dplyr::pull(repo)
+
+# Alternative: rank by stars received (now that stats$stars is available)
+# top_repos <- head(stats$stars$repo, 6)
 
 punch_dir <- file.path(tempdir(), "punchcard-frames")
 dir.create(punch_dir, showWarnings = FALSE, recursive = TRUE)
 
 for (i in seq_along(top_repos)) {
-  p <- punchcard_plot(commits, repo = top_repos[[i]], title = top_repos[[i]])
+  p <- punchcard_plot(stats$commits, repo = top_repos[[i]], title = top_repos[[i]])
   ggsave(
     filename = file.path(punch_dir, sprintf("%04d.png", i)),
     plot     = p,
